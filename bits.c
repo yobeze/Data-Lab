@@ -12,6 +12,7 @@
  * it's not good practice to ignore compiler warnings, but in this
  * case it's OK.  
  */
+ //heyyooooo
 
 #if 0
 /*
@@ -152,7 +153,9 @@ int bitNor(int x, int y) {
  *   Rating: 1
  */
 int fitsShort(int x) {
-  return 2;
+    
+    
+    return 0;
 }
 /* 
  * thirdBits - return word with every third bit (starting from the LSB) set to 1
