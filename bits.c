@@ -141,6 +141,7 @@ NOTES:
  */
 int bitNor(int x, int y) {
   return (~x & ~y);
+         /* some random */
 }
 /* 
  * fitsShort - return 1 if x can be represented as a 
