@@ -140,7 +140,8 @@ NOTES:
  *   Max ops: 8
  *   Rating: 1
  */
-int bitNor(int x, int y) {
+int bitNor(int x, int y) 
+{
   return (~x & ~y);
          /* some random */
 }
@@ -152,8 +153,9 @@ int bitNor(int x, int y) {
  *   Max ops: 8
  *   Rating: 1
  */
-int fitsShort(int x) {
-    //after a left & right shift of 16, the left handside of x should either be all 1's or all 0's
+int fitsShort(int x) 
+{
+    //after a left & right shift of 16, the left handside of x should either be all 1's or all 0's //Check recitation slides
     //if x remains the same then it can be validly represented as a 16 bit integer
     return !(((x << 16) >> 16) ^ x);
 }
@@ -163,8 +165,13 @@ int fitsShort(int x) {
  *   Max ops: 8
  *   Rating: 1
  */
-int thirdBits(void) {
-  return 2;
+int thirdBits(void) 
+{
+    int a_mask = 0x49;
+    int b_mask = a_mask | a_mask << 9;
+    int c_mask = b_mask | b_mask << 18;
+    
+    return c_mask;
 }
 /* 
  * anyEvenBit - return 1 if any even-numbered bit in word set to 1
@@ -173,8 +180,13 @@ int thirdBits(void) {
  *   Max ops: 12
  *   Rating: 2
  */
-int anyEvenBit(int x) {
-  return 2;
+int anyEvenBit(int x) 
+{
+    int a = 0x55;
+    int b = a | a << 8; //this is 0x55 + 1
+    int c = b | b << 16; //this is 0x55 + 2
+    int foo = x & c;
+    return !!foo;
 }
 /* 
  * copyLSB - set all bits of result to least significant bit of x
@@ -183,8 +195,12 @@ int anyEvenBit(int x) {
  *   Max ops: 5
  *   Rating: 2
  */
-int copyLSB(int x) {
-  return 2;
+int copyLSB(int x) 
+{
+    //shift bit to most significant bit
+    //right shift bit airthmetically to original
+    int foo = (x << 31) >> 31;
+    return foo;
 }
 /* 
  * implication - return x -> y in propositional logic - 0 for false, 1
@@ -196,7 +212,8 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int implication(int x, int y) {
-    return 2;
+    //propositional logic - as long as y is true then we can disregard x, if y is not true, then you must evaluate x and y's values
+    return y | !(x ^ y);
 }
 /* 
  * bitMask - Generate a mask consisting of all 1's 
@@ -208,8 +225,13 @@ int implication(int x, int y) {
  *   Max ops: 16
  *   Rating: 3
  */
-int bitMask(int highbit, int lowbit) {
-  return 2;
+int bitMask(int highbit, int lowbit) 
+{
+    int low = ~ 0 << lowbit; //shifts all 1's to the left by one
+    int high = ~ 0 << highbit; //shifts all 1's to the right by one
+    high = ~(high << 1); //shifts highbit over by one more and takes its compliment
+    return low & high;
+    
 }
 /*
  * ezThreeFourths - multiplies by 3/4 rounding toward 0,
@@ -222,8 +244,11 @@ int bitMask(int highbit, int lowbit) {
  *   Max ops: 12
  *   Rating: 3
  */
-int ezThreeFourths(int x) {
-  return 2;
+int ezThreeFourths(int x) 
+{
+    int boo = ((x << 1) + x);
+    int foo = (boo >> 31) & 3;
+    return (foo + boo) >> 2;
 }
 /*
  * satMul3 - multiplies by 3, saturating to Tmin or Tmax if overflow
@@ -236,8 +261,20 @@ int ezThreeFourths(int x) {
  *  Max ops: 25
  *  Rating: 3
  */
-int satMul3(int x) {
-    return 2;
+int satMul3(int x) 
+{
+    int mask = x >> 31; //mask
+    int TMin = 1 << 31; //right shift 31
+    int TMax = ~ TMin;
+    int overflow = 0; //overflow variable
+    int foo;
+    int boo = x << 1;
+    overflow = x ^ boo;
+    foo = boo + x;
+    overflow |= boo ^ foo;
+    overflow >>= 31;
+    
+    return (overflow & ((mask & TMin) | (~mask & TMax))) | (~overflow & foo);
 }
 /*
  * bitParity - returns 1 if x contains an odd number of 0's
@@ -246,8 +283,15 @@ int satMul3(int x) {
  *   Max ops: 20
  *   Rating: 4
  */
-int bitParity(int x) {
-  return 2;
+int bitParity(int x) 
+{
+    x = x ^ (x >> 1); //shift x left by 1
+    x = x ^ (x >> 2); //shift x left by 2
+    x = x ^ (x >> 4);
+    x = x ^ (x >> 8);
+    x = x ^ (x >> 16);
+    
+    return x & 1;
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
@@ -256,8 +300,9 @@ int bitParity(int x) {
  *   Max ops: 90
  *   Rating: 4
  */
-int ilog2(int x) {
-  return 2;
+int ilog2(int x) 
+{
+    return 2;
 }
 /*
  * trueThreeFourths - multiplies by 3/4 rounding toward 0,
