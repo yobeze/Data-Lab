@@ -153,9 +153,9 @@ int bitNor(int x, int y) {
  *   Rating: 1
  */
 int fitsShort(int x) {
-    
-    
-    return 0;
+    //after a left & right shift of 16, the left handside of x should either be all 1's or all 0's
+    //if x remains the same then it can be validly represented as a 16 bit integer
+    return !(((x << 16) >> 16) ^ x);
 }
 /* 
  * thirdBits - return word with every third bit (starting from the LSB) set to 1
