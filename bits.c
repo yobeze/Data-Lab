@@ -316,7 +316,14 @@ int ilog2(int x)
  */
 int trueThreeFourths(int x)
 {
-  return 2;
+    int num1 = x >> 1;
+    int num2 = x >> 2;
+    int foo = (x >> 31) & 0x3; //Computes from low-order 2 bits
+    int boo1 = x & 0x3;
+    int boo2 = (x & 0x1) << 1;
+    int booBooTheFool = (boo1 + boo2 + foo) >> 2;
+    
+    return num1 + num2 + booBooTheFool;
 }
 /*
  * Extra credit
