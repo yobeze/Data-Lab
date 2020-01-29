@@ -244,7 +244,7 @@ int bitMask(int highbit, int lowbit)
  *   Max ops: 12
  *   Rating: 3
  */
-int ezThreeFourths(int x) 
+int ezThreeFourths(int x) //8
 {
     int boo = ((x << 1) + x);
     int foo = (boo >> 31) & 3;
@@ -261,7 +261,7 @@ int ezThreeFourths(int x)
  *  Max ops: 25
  *  Rating: 3
  */
-int satMul3(int x) 
+int satMul3(int x) //9
 {
     int mask = x >> 31; //mask
     int TMin = 1 << 31; //right shift 31
@@ -283,13 +283,13 @@ int satMul3(int x)
  *   Max ops: 20
  *   Rating: 4
  */
-int bitParity(int x) 
+int bitParity(int x) //10
 {
-    x = x ^ (x >> 1); //shift x left by 1
-    x = x ^ (x >> 2); //shift x left by 2
+    x = x ^ (x >> 16); //shift x left by 16 bits
+    x = x ^ (x >> 8); //shift x left by 8 bits
     x = x ^ (x >> 4);
-    x = x ^ (x >> 8);
-    x = x ^ (x >> 16);
+    x = x ^ (x >> 2);
+    x = x ^ (x >> 1);
     
     return x & 1;
 }
@@ -302,7 +302,16 @@ int bitParity(int x)
  */
 int ilog2(int x) 
 {
-    return 2;
+    //Ignore, get office hours help
+    int foo = 0;
+    foo = (!!(x >> 16)) << 4;
+    //if foo > (foo + 8)
+    foo = foo + ((!!(x >> (foo + 8))) << 3);
+    foo = foo + ((!!(x >> (foo + 4))) << 2);
+    foo = foo + ((!!(x >> (foo + 2))) << 1);
+    foo = foo + (!!(x >> (foo + 1)));
+    return foo;
+
 }
 /*
  * trueThreeFourths - multiplies by 3/4 rounding toward 0,
