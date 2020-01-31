@@ -167,6 +167,13 @@ int fitsShort(int x)
  */
 int thirdBits(void) 
 {
+    /*
+   * Sets x equal to 1 then shifts it over 3 and adds 1, 
+   * then shifts that over 6 and adds the 3 shifted one,
+   * then shifts that over 12 and adds the 6 shifted one,
+   * then shifts that over 24 and adds the 12 shifted one
+   */
+    //different method with less operations
     int a_mask = 0x49;
     int b_mask = a_mask | a_mask << 9;
     int c_mask = b_mask | b_mask << 18;
@@ -182,7 +189,7 @@ int thirdBits(void)
  */
 int anyEvenBit(int x) 
 {
-    int a = 0x55;
+    int a = 0x55; //0x55 preserves only even-numbered bits in word
     int b = a | a << 8; //this is 0x55 + 1
     int c = b | b << 16; //this is 0x55 + 2
     int foo = x & c;
